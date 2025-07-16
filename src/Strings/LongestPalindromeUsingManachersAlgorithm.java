@@ -12,7 +12,7 @@ public class LongestPalindromeUsingManachersAlgorithm {
         int center = 0, right = 0;
         int maxLen = 0, centerIndex = 0;
 
-        for (int i = 0; i < t.length() - 1; i++) {
+        for (int i = 1; i < t.length() - 1; i++) {
 
             int mirror = 2 * center - 1;
 
