@@ -2,57 +2,54 @@ package Strings;
 
 public class LongestPalindromeUsingManachersAlgorithm {
 
-    public static String longestPalindrome(String S) {
+    public String longestPalWithManchar(String str) {
 
-        if (S == null || S.isEmpty())
-            return "";
+        String T = preprocess(str);
+        int n = T.length();
+        int[] P = new int[n];
+        int C = 0, R = 0;
 
-        String t = preprocess(S);
-        int[] p = new int[t.length()];
-        int center = 0, right = 0;
+        for (int i = 0; i < n - 1; i++) {
+            int mirror = 2 * C - i;  // mirror = c-d where d = distance c-(i-c)
+            if (i < R) {
+                P[i] = Math.min(R - i, P[mirror]);
+            }
+
+            while (T.charAt(i + 1 + P[i]) == T.charAt(i - 1 - P[i])) {
+                P[i]++;
+            }
+
+            if (i + P[i] > R) {
+                C = i;
+                R = i + P[i];
+            }
+
+        }
+
         int maxLen = 0, centerIndex = 0;
 
-        for (int i = 1; i < t.length() - 1; i++) {
-
-            int mirror = 2 * center - 1;
-
-            if (i < right) {
-                p[i] = Math.max(p[mirror], right - i);
+        for (int j = 0; j < n - 1; j++) {
+            if (P[j] > maxLen) {
+                maxLen = P[j];
+                centerIndex = j;
             }
-
-            while (t.charAt(i + p[i] + 1) == t.charAt(i - p[i] - 1)) {
-                p[i]++;
-            }
-
-            if (i + p[i] > right) {
-                center = i;
-                right = i + p[i];
-
-            }
-
-            if (p[i] > maxLen) {
-
-                maxLen = p[i];
-                centerIndex = i;
-            }
-
         }
         int start = (centerIndex - maxLen) / 2;
-        return S.substring(start, start + maxLen);
+        return str.substring(start, start + maxLen);
+
+
 
     }
+    public String preprocess(String S){
 
-    public static String preprocess(String S) {
-        StringBuilder sb = new StringBuilder('^');
-
-        for (char c : S.toCharArray()) {
-            sb.append(c);
-            sb.append('#');
+        StringBuilder  sbr = new StringBuilder('^');
+        for(char c : S.toCharArray()){
+            sbr.append(c).append('#');
         }
-        sb.append("#$");
-       return sb.toString();
+        sbr.append("#$");
+
+        return sbr.toString();
 
     }
-
 
 }
